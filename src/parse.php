@@ -59,6 +59,10 @@ function parse(string $filename, array $derivingMap): DefinitionCollection
             $token[2] -= 2;
             $line = $token[2];
         }
+        
+        if (314 === $token[0] || 312 === $token[0]) {
+            $token[0] = 311;
+        }
 
         if ($token[0] === T_COMMENT) {
             if ($position === $tokenCount - 1) {
