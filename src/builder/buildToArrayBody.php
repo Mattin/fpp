@@ -150,7 +150,7 @@ function buildToArrayBody(Definition $definition, ?Constructor $constructor, Def
         }
 
         foreach ($argumentDefinition->derivings() as $deriving) {
-            if ($argument->nullable() && !$deriving instanceof Deriving\FromString && !$deriving instanceof Deriving\FromArray) {
+            if ($argument->nullable() && !$deriving instanceof Deriving\FromString && !$deriving instanceof Deriving\FromArray && !$deriving instanceof Deriving\FromScalar) {
                 $code .= "null === \$this->{$argument->name()} ? null : ";
             }
 
