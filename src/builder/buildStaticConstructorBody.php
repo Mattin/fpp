@@ -96,6 +96,8 @@ CODE;
         } else {
             $start .= "\n";
         }
+        
+        $first = false;
     };
 
     foreach ($constructor->arguments() as $key => $argument) {
