@@ -51,6 +51,7 @@ function buildStaticConstructorBody(Definition $definition, ?Constructor $constr
 
     $start = '';
     $code = '';
+    $first = '';
 
     $addArgument = function (int $key, string $name, string $value) use ($inclFirstArgument): string {
         if (false === $inclFirstArgument && 0 === $key) {
@@ -64,6 +65,11 @@ function buildStaticConstructorBody(Definition $definition, ?Constructor $constr
         $intend = '';
         if (empty($start) && $argument->nullable()) {
             $start = "if (null !== \${$argument->name()}) {\n";
+            $intend = '    ';
+        }
+        
+        if ($argument->nullable() && false === $first) {
+            $start .= "$intend        if (null !== \${$argument->name()}) {\n";
             $intend = '    ';
         }
 
@@ -117,7 +123,7 @@ CODE;
                 case $deriving instanceof Deriving\ToArray:
                     if ($argument->isList()) {
                         $foundList = true;
-                        $buildToArrayBlock($argument, $start);
+                        $buildToArrayBlock($argument, $start, $first);
                         $code .= $addArgument($key, $argument->name(), "\$__array_{$argument->name()}");
                     } else {
                         $value = $argument->nullable()
@@ -131,7 +137,7 @@ CODE;
                 case $deriving instanceof Deriving\ToScalar:
                     if ($argument->isList()) {
                         $foundList = true;
-                        $buildToArrayBlock($argument, $start);
+                        $buildToArrayBlock($argument, $start, $first);
                         $code .= $addArgument($key, $argument->name(), "\$__array_{$argument->name()}");
                     } else {
                         $value = $argument->nullable()
@@ -144,7 +150,7 @@ CODE;
                 case $deriving instanceof Deriving\Enum:
                     if ($argument->isList()) {
                         $foundList = true;
-                        $buildToArrayBlock($argument, $start);
+                        $buildToArrayBlock($argument, $start, $first);
                         $code .= $addArgument($key, $argument->name(), "\$__array_{$argument->name()}");
                     } else {
                         $asWhat = $deriving->useValue() ? 'value' : 'name';
@@ -159,7 +165,7 @@ CODE;
                 case $deriving instanceof Deriving\Uuid:
                     if ($argument->isList()) {
                         $foundList = true;
-                        $buildToArrayBlock($argument, $start);
+                        $buildToArrayBlock($argument, $start, $first);
                         $code .= $addArgument($key, $argument->name(), "\$__array_{$argument->name()}");
                     } else {
                         $value = $argument->nullable()
