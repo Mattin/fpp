@@ -51,7 +51,7 @@ function buildStaticConstructorBody(Definition $definition, ?Constructor $constr
 
     $start = '';
     $code = '';
-    $first = '';
+    $first = true;
 
     $addArgument = function (int $key, string $name, string $value) use ($inclFirstArgument): string {
         if (false === $inclFirstArgument && 0 === $key) {
@@ -61,7 +61,7 @@ function buildStaticConstructorBody(Definition $definition, ?Constructor $constr
         return "            '{$name}' => {$value},\n";
     };
 
-    $buildToArrayBlock = function (Argument $argument, string &$start): void {
+    $buildToArrayBlock = function (Argument $argument, string &$start, bool &$first): void {
         $intend = '';
         if (empty($start) && $argument->nullable()) {
             $start = "if (null !== \${$argument->name()}) {\n";
