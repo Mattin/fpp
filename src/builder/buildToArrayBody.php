@@ -2,7 +2,7 @@
 
 /**
  * This file is part of prolic/fpp.
- * (c) 2018-2019 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * (c) 2018-2019 Sascha-Oliver Prolic <saschaprolic@googlemail.com>.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -34,7 +34,7 @@ function buildToArrayBody(Definition $definition, ?Constructor $constructor, Def
         }
     }
 
-    if (! $valid) {
+    if (!$valid) {
         return $placeHolder;
     }
 
@@ -51,7 +51,7 @@ function buildToArrayBody(Definition $definition, ?Constructor $constructor, Def
     $class .= $definition->name();
 
     foreach ($constructor->arguments() as $key => $argument) {
-        if ($argument->isScalartypeHint() && ! $argument->isList()) {
+        if ($argument->isScalartypeHint() && !$argument->isList()) {
             $code .= "            '{$argument->name()}' => ";
             $code .= "\$this->{$argument->name()},\n";
             continue;
@@ -60,11 +60,11 @@ function buildToArrayBody(Definition $definition, ?Constructor $constructor, Def
         if ($argument->isList()) {
             $argumentName = $argument->name();
 
-            if (null !== $argument->type() && ! $argument->isScalartypeHint()) {
-                $position = \strrpos($argument->type(), '\\');
+            if (null !== $argument->type() && !$argument->isScalartypeHint()) {
+                $position = strrpos($argument->type(), '\\');
 
-                $namespace = \substr($argument->type(), 0, $position);
-                $name = \substr($argument->type(), $position + 1);
+                $namespace = substr($argument->type(), 0, $position);
+                $name = substr($argument->type(), $position + 1);
 
                 if ($collection->hasDefinition($namespace, $name)) {
                     $argumentDefinition = $collection->definition($namespace, $name);
@@ -110,12 +110,8 @@ function buildToArrayBody(Definition $definition, ?Constructor $constructor, Def
                     }
                 }
 
-                if (! $match) {
-                    throw new \RuntimeException(\sprintf(
-                        'No toArray, ToScalar, ToString, Enum or Uuid deriving given for argument $%s on definition %s',
-                        $argumentName,
-                        $namespace . '\\' . $name
-                    ));
+                if (!$match) {
+                    throw new \RuntimeException(sprintf('No toArray, ToScalar, ToString, Enum or Uuid deriving given for argument $%s on definition %s', $argumentName, $namespace.'\\'.$name));
                 }
 
                 $prefixCode .= "$indent        }\n";
@@ -136,10 +132,10 @@ function buildToArrayBody(Definition $definition, ?Constructor $constructor, Def
 
         $code .= "            '{$argument->name()}' => ";
 
-        $position = \strrpos($argument->type(), '\\');
+        $position = strrpos($argument->type(), '\\');
 
-        $namespace = \substr($argument->type(), 0, $position);
-        $name = \substr($argument->type(), $position + 1);
+        $namespace = substr($argument->type(), 0, $position);
+        $name = substr($argument->type(), $position + 1);
 
         if ($collection->hasDefinition($namespace, $name)) {
             $argumentDefinition = $collection->definition($namespace, $name);
@@ -177,9 +173,9 @@ function buildToArrayBody(Definition $definition, ?Constructor $constructor, Def
 
     $code .= "        ];\n";
 
-    if (! empty($prefixCode)) {
-        $prefixCode = \substr($prefixCode, 8) . '        ';
+    if (!empty($prefixCode)) {
+        $prefixCode = substr($prefixCode, 8).'        ';
     }
 
-    return $prefixCode . $code;
+    return $prefixCode.$code;
 }
