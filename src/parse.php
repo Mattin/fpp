@@ -37,7 +37,7 @@ function parse(string $filename, array $derivingMap): DefinitionCollection
     $definitionType = null;
     $namespaceFound = false;
     $contents = file_get_contents($filename);
-    $tokens = token_get_all("<?php\n\n$contents"); // \PhpToken::tokenize("<?php\n\n$contents"); // token_get_all("<?php\n\n$contents");
+    $tokens = token_get_all("<?php\n\n$contents");
 
     $collection = new DefinitionCollection();
 
