@@ -125,14 +125,28 @@ function parse(string $filename, array $derivingMap): DefinitionCollection
             }
             $token = $nextToken();
             $type = null;
-            $nullable = false;
+            $isList = false;
+
+            if ($token[0] !== 266) {
+                $nullable = false;
+            }
 
             $token = $skipWhitespace($token);
 
             if ('?' === $token[1]) {
                 $nullable = true;
                 $token = $skipWhitespace($nextToken());
-                if (\T_NAME_FULLY_QUALIFIED !== $token[0] && \T_NAME_QUALIFIED !== $token[0] && \T_STRING !== $token[0] && \T_NS_SEPARATOR !== $token[0]) {
+                if ('[' === $token[1]) {
+                    $token = $nextToken();
+
+                    if (']' !== $token[1]) {
+                        throw ParseError::unexpectedTokenFound(']', $token, $filename);
+                    }
+                    $token = $nextToken();
+                    $requireWhitespace($token);
+                    $isList = true;
+                }
+                elseif (\T_NAME_FULLY_QUALIFIED !== $token[0] && \T_NAME_QUALIFIED !== $token[0] && \T_STRING !== $token[0] && \T_NS_SEPARATOR !== $token[0]) {
                     throw ParseError::unexpectedTokenFound('T_STRING or T_NS_SEPARATOR', $token, $filename);
                 }
             }
@@ -207,7 +221,7 @@ function parse(string $filename, array $derivingMap): DefinitionCollection
                 }
                 throw ParseError::unexpectedTokenFound(', or }', $token, $filename);
             } elseif (\T_VARIABLE === $token[0]) {
-                $arguments[] = new Argument(substr($token[1], 1));
+                $arguments[] = new Argument(substr($token[1], 1), $type, $nullable, $isList);
                 $token = $skipWhitespace($nextToken());
 
                 if (\in_array($token[1], [',', '}'], true)) {
