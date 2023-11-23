@@ -48,6 +48,10 @@ function buildPayloadValidation(Definition $definition, ?Constructor $constructo
             // ignore first argument, it's the aggregate id
             continue;
         }
+        if (null === $argument->type() && $argument->nullable()) {
+            // ignore as we don't need
+            continue;
+        }
         if (null === $argument->type()) {
             $code .= <<<CODE
         if (! isset(\$payload['{$argument->name()}'])) {
