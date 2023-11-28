@@ -159,7 +159,7 @@ function parse(string $filename, array $derivingMap): DefinitionCollection
             if (\T_STRING === $token[0] || \T_ENUM === $token[0] || \T_NAME_FULLY_QUALIFIED === $token[0] || \T_NAME_QUALIFIED === $token[0]) {
                 $type .= $token[1];
 
-                if (!\in_array($type, ['string', 'int', 'bool', 'float'], true)) {
+                if (!\in_array($type, ['string', 'int', 'bool', 'float', 'mixed'], true)) {
                     $requireString($token);
                 }
 
@@ -205,7 +205,7 @@ function parse(string $filename, array $derivingMap): DefinitionCollection
                 if ('\\' === substr($type, 0, 1)) {
                     $type = substr($type, 1);
                 } elseif ('\\' !== substr($type, 0, 1)
-                    && !\in_array($type, ['string', 'int', 'bool', 'float'], true)
+                    && !\in_array($type, ['string', 'int', 'bool', 'float', 'mixed'], true)
                 ) {
                     $type = $namespace.'\\'.$type;
                 }
@@ -404,7 +404,7 @@ function parse(string $filename, array $derivingMap): DefinitionCollection
                 }
 
                 if ('[' === $token[1]
-                    && \in_array($constructorName, ['Bool', 'Float', 'Int', 'String'], true)
+                    && \in_array($constructorName, ['Bool', 'Float', 'Int', 'String', 'Mixed'], true)
                 ) {
                     $token = $nextToken();
 
@@ -418,7 +418,7 @@ function parse(string $filename, array $derivingMap): DefinitionCollection
 
                 if ($namespace
                     && '\\' !== substr($constructorName, 0, 1)
-                    && !\in_array($constructorName, ['Bool', 'Bool[]', 'Float', 'Float[]', 'Int', 'Int[]', 'String', 'String[]'], true)
+                    && !\in_array($constructorName, ['Bool', 'Bool[]', 'Float', 'Float[]', 'Int', 'Int[]', 'String', 'String[]', 'Mixed', 'Mixed[]'], true)
                 ) {
                     $constructorName = $namespace.'\\'.$constructorName;
                 } elseif ('\\' === substr($constructorName, 0, 1)) {
