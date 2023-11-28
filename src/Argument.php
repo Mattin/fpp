@@ -70,7 +70,7 @@ class Argument
 
     public function isScalarTypeHint(): bool
     {
-        return \in_array($this->type, ['string', 'int', 'bool', 'float'], true);
+        return \in_array($this->type, ['string', 'int', 'bool', 'float', 'mixed'], true);
     }
 
     public function __toString(): string
