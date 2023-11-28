@@ -61,6 +61,15 @@ CODE;
                 $floatCheck = " && ! \is_int(\$data['{$argument->name()}']))";
             }
 
+            if ($argument->type() === 'mixed') {
+                $code .= <<<CODE
+        \${$argument->name()} = \$data['{$argument->name()}'];
+
+
+CODE;
+                continue;
+            }
+
             $code .= <<<CODE
         if (! isset(\$data['{$argument->name()}']) || {$floatCheckStart}! \is_{$argument->type()}(\$data['{$argument->name()}'])$floatCheck) {
             throw new \InvalidArgumentException("Key '{$argument->name()}' is missing in data array or is not a {$argument->type()}");
