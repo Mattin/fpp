@@ -103,7 +103,7 @@ function buildArgumentType(Argument $argument, Definition $definition, bool $wit
     }
 
     if ($argument->isScalartypeHint()) {
-        if ($argument->nullable()) {
+        if ($argument->nullable() && $argument->type() !== 'mixed') {
             $code .= '?';
         }
         $code .= $argument->type();
@@ -125,7 +125,7 @@ function buildArgumentType(Argument $argument, Definition $definition, bool $wit
         ? $name
         : '\\' . $argument->type();
 
-    if ($argument->nullable()) {
+    if ($argument->nullable() && $argument->type() !== 'mixed') {
         $code .= '?';
     }
     $code .= $returnType;
