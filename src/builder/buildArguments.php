@@ -40,7 +40,7 @@ function buildArguments(Definition $definition, ?Constructor $constructor, Defin
             continue;
         }
 
-        if ($argument->nullable()) {
+        if ($argument->nullable() && $argument->type() !== 'mixed') {
             $argumentList .= '?';
         }
 
