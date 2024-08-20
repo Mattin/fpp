@@ -88,6 +88,10 @@ CODE;
             continue;
         }
 
+        if ($argument->isScalartypeHint() && ! $argument->nullable() && $argument->type() === 'mixed') {
+            continue;
+        }
+
         if ($argument->isScalartypeHint() && ! $argument->nullable()) {
             $floatCheck = '';
             $startFloatCheck = '';
