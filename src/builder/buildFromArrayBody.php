@@ -109,6 +109,25 @@ CODE;
             continue;
         }
 
+        if ($argument->isScalartypeHint() && $argument->nullable() && $argument->type() === 'mixed') {
+            $floatCheck = '';
+
+            if ($argument->type() === 'float') {
+                $floatCheck = " && ! \is_int(\$data['{$argument->name()}'])";
+            }
+
+            $code .= <<<CODE
+        if (isset(\$data['{$argument->name()}'])) {
+            \${$argument->name()} = \$data['{$argument->name()}'];
+        } else {
+            \${$argument->name()} = null;
+        }
+
+
+CODE;
+            continue;
+        }
+
         if ($argument->isScalartypeHint() && $argument->nullable()) {
             $floatCheck = '';
 
