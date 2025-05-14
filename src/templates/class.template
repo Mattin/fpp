@@ -1,5 +1,6 @@
 namespace {{namespace}};
 
+#[Generated]
 {{class_keyword}}class {{class_name}}{{class_extends}}{{class_implements}}
 {
     {{traits}}
