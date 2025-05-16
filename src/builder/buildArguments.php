@@ -94,7 +94,7 @@ function buildArguments(Definition $definition, ?Constructor $constructor, Defin
         if ($deriving->equals(new Deriving\Exception())) {
             /** @var Deriving\Exception $deriving */
             $deriving = $deriving;
-            $argumentList .= \sprintf('string $message = \'%s\', int $code = 0, \\Exception $previous = null, ', $deriving->defaultMessage());
+            $argumentList .= \sprintf('string $message = \'%s\', int $code = 0, ?\\Exception $previous = null, ', $deriving->defaultMessage());
             break;
         }
     }
