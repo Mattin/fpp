@@ -57,7 +57,7 @@ function buildExceptionConstructors(Definition $definition, ?Constructor $constr
             ),
             [
                 'int $code = 0',
-                '\Exception $previous = null',
+                '?\Exception $previous = null',
             ]
         ));
 
